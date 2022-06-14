@@ -1,0 +1,152 @@
+// header files
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+// global variable
+char P_name[100],pickup[100],destination[100],c;
+int P_no,time,x;
+int distance,amount;
+// pointer for file
+FILE *cab;
+// function to book taxi
+void booktaxi()
+{
+ int ch;
+ char b;
+//getting details for ride
+ printf("Name:");
+ scanf("%s",P_name);
+ printf("phone no:");
+ scanf("%d",&P_no);
+ printf("pickup Time(hrmin):");
+ scanf("%d",&time);
+ printf("pickup loction:");
+ scanf("%s",pickup);
+ printf("destination:");
+ scanf("%s",destination);
+ printf("distance(km):");
+ scanf("%d",&distance);
+3
+ printf("select cab \n 1.mini \n 2.suv");
+ printf("\n Enter your choice:");scanf("%d", &ch);
+//calculating amount
+ switch(ch)
+ {
+ case 1:
+ if(distance<100)
+ {
+ amount=distance*10;
+ }
+ else if (distance>=100)
+ {
+ amount=distance*5; 
+ }
+ break;
+ case 2:
+ if(distance<100)
+ {
+ amount=distance*15;
+ 
+ }
+ else if (distance>=100)
+ {
+ amount=distance*10;
+ 
+ }
+ break; 
+ }
+ printf("\n amount:%d",amount);
+//booking ride
+4
+ bk:
+ printf("\ndo you want to book taxi?\n(1=>yes)\n(2=>no):");
+ scanf("%d",&x);
+ if(x==1)
+ { 
+ printf("\nthank you for booking...");
+ cab=fopen("cab_list.txt","a");
+ 
+fprintf(cab,"%s\t\t%d\t\t\t%d\t\t%s\t\t%s\t\t%d\t\t%d\n",P_name,P_no,time,pickup,destination,
+distance,amount);
+ fclose(cab);
+ }
+ else if(x==2)
+ {
+ printf("\nbooking cancled.");
+ }
+ else
+ {
+ printf("\ninvalid choice");
+ goto bk;
+ }
+ 
+}
+// function to print price list
+void price_list()
+{
+ printf("~~~~~~~~~price list~~~~~~~~~~");
+ printf("\n");
+ printf("\ns.no\ttaxi\tmax people\t100km\t>100km");
+ printf("\n");
+5
+ printf("\n1\tmini\t\t4\t10\t5");
+ printf("\n");
+ printf("\n2\tsuv\t\t7\t15\t10");
+ printf("\n");
+ printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+ 
+}
+//function to print booking list
+void show_list()
+{
+ printf("taxi booking list:");
+ cab = fopen("cab_list.txt","r");
+ printf("name\t\tp_no\t\ttime\t\tpickup\t\tdestination\t\tdistance\t\tamount\n");
+ while(c!=EOF)
+ {
+ c=fgetc(cab);
+ printf("%c",c);
+ }
+ fclose(cab);
+}
+//main fuction
+int main()
+{
+int num=0;
+char c;
+do{
+//shows the choice list
+ printf("\n~~~~~~~ TAXI ~~~~~~~");
+ printf("\n\t[1]=> show price list ");
+ printf("\n");
+6
+ printf("\n\t[2]=> book taxi ");
+ printf("\n");
+ printf("\n\t[3]=> Show booking list ");
+ printf("\n");
+ printf("\n\t[4]=> exit");
+ printf("\n");
+ printf("\n~~~~~~~~~~~~~~~~~~~~~");
+ printf("\n");
+ printf("\n\t enter your choice:");
+ scanf("%d",&num);
+//execute based on choice
+ switch(num)
+ {
+ case 1:
+ price_list();
+ break;
+ case 2:
+ booktaxi();
+ break;
+ case 3:
+ show_list();
+ break;
+ case 4:
+ break;
+ default:
+ printf("invalid choice");
+ break;
+ }
+}while(num!=4);
+return 0;
